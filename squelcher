@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+require_relative "./squelcher"
+
+begin 
+  dates = Squelcher.squelch ARGV.join(" ")
+rescue Squelcher::ParseError => e
+  puts e.message
+else
+  puts dates.join(", ")
+end

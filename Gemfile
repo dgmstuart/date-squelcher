@@ -4,4 +4,5 @@ gem "chronic"
 
 group :development do 
   gem "rspec"
+  gem "timecop"
 end
