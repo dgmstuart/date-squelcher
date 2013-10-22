@@ -2,7 +2,7 @@ require "spec_helper"
 require "timecop"
 
 describe Squelcher do
-  before(:all) { Timecop.freeze(Time.local(2000)) }
+  before(:all) { Timecop.freeze(Time.local(2000, 6)) }
   
   describe "#squelch" do
     subject(:squelch) { Squelcher.squelch(@date_string) }
@@ -50,8 +50,11 @@ describe Squelcher do
       end
       it_should_behave_like "squelch"
     end
-    
-    Date::DAYNAMES.each do |day|
+
+    # Daynames seem to be unreliable... 
+    # For real use we maybe need to sanity check: is the date either less than 6 months away, or does it match the given day?
+    DAYNAMES = Date::DAYNAMES + ["Mon", "Tue", "Tues", "Wed", "Weds", "Thu", "Thur", "Thurs", "Fri", "Sat", "Sun"]
+    DAYNAMES.each do |day|
       context "given dates with a #{day} in front" do
         let(:first_date_in) { "#{day} 13th October" }
         let(:first_date_out) { "13/10/2000" }
@@ -93,6 +96,15 @@ Sunday 1st December
 #{last_date_in}}
       end
       it_should_behave_like "squelch"
+    end
+
+    context "when there are dates with months ahead of and behind the current month" do
+      let(:first_date_in) { "1st July" }
+      let(:first_date_out) { "01/07/2000" }
+      let(:last_date_in) { "1st May" }
+      let(:last_date_out) { "01/05/2001" }
+      before { @date_string = "#{first_date_in},#{last_date_in}" }
+      it_should_behave_like "squelch" # i.e.interpret dates as being in the future
     end
   end
 end
