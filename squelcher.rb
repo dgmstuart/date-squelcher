@@ -8,8 +8,29 @@ class Squelcher
   DAYNAMES = Date::DAYNAMES + ["Mon", "Tues", "Tue", "Weds", "Wed", "Thurs", "Thur", "Thu", "Fri", "Sat", "Sun"]
 
   def self.squelch(input)
-    dates = parse_input(input)
-    dates.map { |date| date.strftime("%d/%m/%Y") }
+    format_dates(parse_input(input))
+  end
+
+  def self.between(input)
+    boundary_dates = parse_input(input)
+    raise ArgumentError, "need two dates" unless boundary_dates.count == 2
+
+    format_dates(dates_between(boundary_dates.first, boundary_dates.last))
+  end
+
+  def self.dates_between(first_date, last_date)
+    d = first_date + 7*60*60*24
+    dates = []
+    while d < last_date do
+      dates << d
+      d += 7*60*60*24
+    end
+
+    dates
+  end
+
+  def self.format_dates(date_array)
+    date_array.map { |date| date.strftime("%d/%m/%Y") }
   end
 
   def self.parse_input(input)

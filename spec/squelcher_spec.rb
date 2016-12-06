@@ -3,14 +3,14 @@ require "timecop"
 
 describe Squelcher do
   before(:all) { Timecop.freeze(Time.local(2000, 6)) }
-  
+
   describe "#squelch" do
     subject(:squelch) { Squelcher.squelch(@date_string) }
     let(:first_date_in) { "01/02/2013" }
     let(:first_date_out) { "01/02/2013" }
     let(:last_date_in) { "01/01/1970" }
     let(:last_date_out) { "01/01/1970" }
-    
+
     context "when given non-date input" do
       before { @date_string = "foobar" }
       it "should raise an appropriate error" do
@@ -33,7 +33,7 @@ describe Squelcher do
       it "should include the last date" do
         squelch.should include last_date_out
       end
-    end   
+    end
 
     context "given a comma-separated string of DD/MM/YYYY dates" do
       before { @date_string = "#{first_date_in},#{last_date_in}" }
@@ -51,7 +51,7 @@ describe Squelcher do
       it_should_behave_like "squelch"
     end
 
-    # Daynames seem to be unreliable... 
+    # Daynames seem to be unreliable...
     # For real use we maybe need to sanity check: is the date either less than 6 months away, or does it match the given day?
     DAYNAMES = Date::DAYNAMES + ["Mon", "Tue", "Tues", "Wed", "Weds", "Thu", "Thur", "Thurs", "Fri", "Sat", "Sun"]
     DAYNAMES.each do |day|
@@ -64,7 +64,7 @@ describe Squelcher do
         it_should_behave_like "squelch"
       end
     end
-    
+
     context "given a Swing Patrol style date list" do
       let(:first_date_in) { "13th October" }
       let(:first_date_out) { "13/10/2000" }
@@ -107,4 +107,19 @@ Sunday 1st December
       it_should_behave_like "squelch" # i.e.interpret dates as being in the future
     end
   end
+
+  describe '.between' do
+    it 'raises an error if ' do
+      expect { Squelcher.between "" }.to raise_error(ArgumentError)
+    end
+
+    it 'should return nothing if there are no dates between the given dates' do
+      expect(Squelcher.between "22 Nov, 29 Nov").to eq []
+    end
+
+    it 'should return one date if there is one date on the same day between the given dates' do
+      expect(Squelcher.between "22 Nov, 6 Dec").to eq ['29/11/2000']
+    end
+  end
+
 end
