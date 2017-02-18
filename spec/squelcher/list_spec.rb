@@ -19,18 +19,18 @@ describe Squelcher::List do
 
     it "should pass a single DD/MM/YYYY date through" do
       @date_string = first_date_in
-      squelch.should == [first_date_out]
+      expect(squelch).to eq([first_date_out])
     end
 
     shared_examples "squelch" do
       it "should return an array" do
-        squelch.should be_an(Array)
+        expect(squelch).to be_an(Array)
       end
       it "should include the first date" do
-        squelch.should include first_date_out
+        expect(squelch).to include first_date_out
       end
       it "should include the last date" do
-        squelch.should include last_date_out
+        expect(squelch).to include last_date_out
       end
     end
 
