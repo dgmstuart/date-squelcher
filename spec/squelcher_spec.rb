@@ -106,6 +106,11 @@ Sunday 1st December
       before { @date_string = "#{first_date_in},#{last_date_in}" }
       it_should_behave_like "squelch" # i.e.interpret dates as being in the future
     end
+
+    context "when there are blank lines" do
+      before { @date_string = "#{first_date_in}\n\n#{last_date_in}" }
+      it_should_behave_like "squelch"
+    end
   end
 
   describe '.between' do

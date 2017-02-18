@@ -35,7 +35,7 @@ class Squelcher
 
   def self.parse_input(input)
     input = strip_daynames(input)
-    date_strings = input.split(SEPARATORS).map{ |s| s.strip }
+    date_strings = input.split(SEPARATORS).map{ |s| s.strip }.reject(&:empty?)
     parse_dates(date_strings)
   end
 
