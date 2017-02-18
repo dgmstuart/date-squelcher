@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require_relative "./squelcher"
+require_relative "./lib/squelcher"
 
 begin
   first, *rest = ARGV

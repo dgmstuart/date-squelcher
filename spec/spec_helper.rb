@@ -1,4 +1,5 @@
-require_relative '../squelcher'
+require_relative '../lib/squelcher'
+require "timecop"
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
