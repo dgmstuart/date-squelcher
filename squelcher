@@ -5,9 +5,9 @@ require_relative "./squelcher"
 begin
   first, *rest = ARGV
   if first == 'between'
-    dates = Squelcher.between rest.join(" ")
+    dates = Squelcher.new.between rest.join(" ")
   else
-    dates = Squelcher.squelch ARGV.join(" ")
+    dates = Squelcher.new.squelch ARGV.join(" ")
   end
 rescue Squelcher::ParseError => e
   puts e.message
