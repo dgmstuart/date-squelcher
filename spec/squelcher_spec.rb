@@ -1,11 +1,11 @@
 require "spec_helper"
 require "timecop"
 
-describe Squelcher do
+describe Squelcher::List do
   before(:all) { Timecop.freeze(Time.local(2000, 6)) }
 
   describe "#squelch" do
-    subject(:squelch) { Squelcher.new.squelch(@date_string) }
+    subject(:squelch) { Squelcher::List.new.squelch(@date_string) }
     let(:first_date_in) { "01/02/2013" }
     let(:first_date_out) { "01/02/2013" }
     let(:last_date_in) { "01/01/1970" }
@@ -112,18 +112,22 @@ Sunday 1st December
       it_should_behave_like "squelch"
     end
   end
+end
+
+describe Squelcher::Range do
+  before(:all) { Timecop.freeze(Time.local(2000, 6)) }
 
   describe '.between' do
     it 'raises an error if ' do
-      expect { Squelcher.new.between "" }.to raise_error(ArgumentError)
+      expect { Squelcher::Range.new.between "" }.to raise_error(ArgumentError)
     end
 
     it 'should return nothing if there are no dates between the given dates' do
-      expect(Squelcher.new.between "22 Nov, 29 Nov").to eq []
+      expect(Squelcher::Range.new.between "22 Nov, 29 Nov").to eq []
     end
 
     it 'should return one date if there is one date on the same day between the given dates' do
-      expect(Squelcher.new.between "22 Nov, 6 Dec").to eq ['29/11/2000']
+      expect(Squelcher::Range.new.between "22 Nov, 6 Dec").to eq ['29/11/2000']
     end
   end
 
