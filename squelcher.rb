@@ -7,6 +7,10 @@ class Squelcher
   SEPARATORS = /[\n,]/
   DAYNAMES = Date::DAYNAMES + ["Mon", "Tues", "Tue", "Weds", "Wed", "Thurs", "Thur", "Thu", "Fri", "Sat", "Sun"]
 
+  def initialize(date_formatter = DateFormatter.new)
+    @date_formatter = date_formatter
+  end
+
   def squelch(input)
     format_dates(parse_input(input))
   end
@@ -32,7 +36,7 @@ class Squelcher
   end
 
   def format_dates(date_array)
-    date_array.map { |date| date.strftime("%d/%m/%Y") }
+    @date_formatter.format(date_array)
   end
 
   def parse_input(input)
@@ -54,6 +58,10 @@ class Squelcher
     DAYNAMES.each { |day| output = output.gsub(/#{day}/, '') }
     output
   end
-end
 
-# TODO: separate out the output format - restructure the tests to some new context blocks : "when the output format is X"
+  class DateFormatter
+    def format(date_array)
+      date_array.map { |date| date.strftime("%d/%m/%Y") }
+    end
+  end
+end
