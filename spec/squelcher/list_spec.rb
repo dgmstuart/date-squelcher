@@ -110,5 +110,13 @@ Sunday 1st December
       before { @date_string = "#{first_date_in}\n\n#{last_date_in}" }
       it_should_behave_like "squelch"
     end
+
+    context "when the date is of the form '1 & 2 feb'" do
+      let(:first_date_in) { "1st & 2nd Oct" }
+      let(:first_date_out) { "01/10/2000" }
+      let(:last_date_out) { "02/10/2000" }
+      before { @date_string = "#{first_date_in}" }
+      it_should_behave_like "squelch"
+    end
   end
 end
